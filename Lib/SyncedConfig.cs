@@ -38,7 +38,7 @@ public class SyncedConfig<T>(string guid) : SyncedInstance<T>, ISynchronizable w
         stream.SendMessage(GUID, "OnRequestConfigSync");
     }
 
-    internal void OnRequestSync(ulong clientId, FastBufferReader _) {
+    public void OnRequestSync(ulong clientId, FastBufferReader _) {
         if (!IsHost) return;
 
         Plugin.Logger.LogDebug($"{GUID} - Config sync request received from client: {clientId}");
@@ -58,7 +58,7 @@ public class SyncedConfig<T>(string guid) : SyncedInstance<T>, ISynchronizable w
         }
     }
 
-    internal void OnReceiveSync(ulong _, FastBufferReader reader) {
+    public void OnReceiveSync(ulong _, FastBufferReader reader) {
         if (!reader.TryBeginRead(IntSize)) {
             LogErr($"{GUID} - Config sync error: Could not begin reading buffer.");
             return;

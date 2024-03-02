@@ -11,10 +11,10 @@ namespace CSync.Lib;
 /// Handles config registration, instance syncing and caching of BepInEx files.<br></br>
 /// </summary>
 public class ConfigManager {
-    internal static Dictionary<string, ConfigFile> FileCache = [];
-    internal static Dictionary<string, ISynchronizable> Instances = [];
+    public static Dictionary<string, ConfigFile> FileCache = [];
+    public static Dictionary<string, ISynchronizable> Instances = [];
 
-    internal static ConfigFile GetConfigFile(string fileName) {
+    public static ConfigFile GetConfigFile(string fileName) {
         bool exists = FileCache.TryGetValue(fileName, out ConfigFile cfg);
         if (!exists) {
             string absPath = Path.Combine(Paths.ConfigPath, fileName);
@@ -45,9 +45,12 @@ public class ConfigManager {
         config.InitInstance(config);
         Instances.Add(guid, config);
     }
+    public static void Unregister(string modGuid) {
+        Instances.Remove(modGuid);
+    }
 
-    internal static void SyncInstances() => Instances.Values.Do(i => i.SetupSync());
-    internal static void RevertSyncedInstances() => Instances.Values.Do(i => i.RevertSync());
+    public static void SyncInstances() => Instances.Values.Do(i => i.SetupSync());
+    public static void RevertSyncedInstances() => Instances.Values.Do(i => i.RevertSync());
 }
 
 public interface ISynchronizable {

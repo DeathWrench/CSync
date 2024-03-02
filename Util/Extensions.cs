@@ -55,14 +55,14 @@ public static class Extensions {
         return (T) info.GetValue(key, typeof(T));
     }
 
-    internal static ConfigEntry<V> Reconstruct<V>(this ConfigFile cfg, SerializationInfo info) {
+    public static ConfigEntry<V> Reconstruct<V>(this ConfigFile cfg, SerializationInfo info) {
         ConfigDefinition definition = new(info.GetString("Section"), info.GetString("Key"));
         ConfigDescription description = new(info.GetString("Description"));
 
         return cfg.Bind(definition, info.GetObject<V>("DefaultValue"), description);
     }
 
-    internal static void SendMessage(this FastBufferWriter stream, string guid, string label, ulong clientId = 0uL) {
+    public static void SendMessage(this FastBufferWriter stream, string guid, string label, ulong clientId = 0uL) {
         bool fragment = stream.Capacity > 1300;
         NetworkDelivery delivery = fragment ? NetworkDelivery.ReliableFragmentedSequenced : NetworkDelivery.Reliable;
 
